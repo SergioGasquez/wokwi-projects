@@ -62,7 +62,7 @@ jobs:
           image: wokwi/builder-rust-nostd-esp
           options: -u esp -v ${{ github.workspace }}:/home/esp/workspace
           run: |
-            cat /home/esp/workspace/${{ matrix.target }}-no_std-${{ matrix.project }}/main.rs > rust-project/src/main.rs
-            cd rust-project
+            cat /home/esp/workspace/${{ matrix.target }}-no_std-${{ matrix.project }}/main.rs > rust-project-${{ matrix.target }}/src/main.rs
+            cd rust-project-${{ matrix.target }}
             . /home/esp/export-esp.sh
             cargo build --release
