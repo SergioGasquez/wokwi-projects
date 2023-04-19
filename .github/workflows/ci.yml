@@ -50,6 +50,7 @@ jobs:
           run: |
             cat /home/esp/workspace/${{ matrix.target }}-${{ matrix.env }}-${{ matrix.project }}/main.rs > rust-project/src/main.rs
             cd rust-project
+            . /home/esp/export-esp.sh
             cargo build --release
 
       - name: Test code example in Docker image (no_std)
@@ -60,4 +61,5 @@ jobs:
           run: |
             cat /home/esp/workspace/${{ matrix.target }}-${{ matrix.env }}-${{ matrix.project }}/main.rs > rust-project/src/main.rs
             cd rust-project
+            . /home/esp/export-esp.sh
             cargo build --release
