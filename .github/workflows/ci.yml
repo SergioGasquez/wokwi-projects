@@ -1,0 +1,61 @@
+---
+name: CI
+
+on:
+  push:
+    paths-ignore:
+      - "book/"
+      - "book/**"
+      - "**/README.md"
+  pull_request:
+    branches: [main]
+    paths-ignore:
+      - "book/"
+      - "book/**"
+      - "**/README.md"
+  schedule:
+    - cron: "50 7 * * *"
+
+jobs:
+  build-examples:
+    name: Test
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        env: ["std", "no_std"]
+        target: ["esp32", "esp32s2", "esp32s3", "esp32c3"]
+        project: ["blinky", "template"]
+    steps:
+      - name: Checkout the repository
+        uses: actions/checkout@v3
+
+      - name: Update ownership
+        run: |
+          sudo chown 1000:1000 -R ${{ github.workspace }}
+
+      - name: Pull Docker image (std)
+        if: matrix.env == 'std'
+        run: docker image pull wokwi/builder-rust-std-${{ matrix.target }}
+
+      - name: Pull Docker image (no_std)
+        if: matrix.env == 'no_std'
+        run: docker image pull wokwi/builder-rust-nostd-esp
+
+      - name: Test code example in Docker image (std)
+        uses: addnab/docker-run-action@v3
+        with:
+          image: wokwi/builder-rust-std-${{ matrix.target }}
+          options: -u esp -v ${{ github.workspace }}:/home/esp/workspace
+          run: |
+            cat ${{ matrix.target }}/${{ matrix.env }}/${{ matrix.project }}/main.rs > rust-project/src/main.rs
+            cargo build --release
+
+      - name: Test code example in Docker image (no_std)
+        uses: addnab/docker-run-action@v3
+        with:
+          image: wokwi/builder-rust-nostd-esp
+          options: -u esp -v ${{ github.workspace }}:/home/esp/workspace
+          run: |
+            cat ${{ matrix.target }}/${{ matrix.env }}/${{ matrix.project }}/main.rs > rust-project/src/main.rs
+            cargo build --release
