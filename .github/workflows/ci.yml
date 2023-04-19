@@ -43,6 +43,7 @@ jobs:
         run: docker image pull wokwi/builder-rust-nostd-esp
 
       - name: Test code example in Docker image (std)
+        if: matrix.env == 'std'
         uses: addnab/docker-run-action@v3
         with:
           image: wokwi/builder-rust-std-${{ matrix.target }}
@@ -54,6 +55,7 @@ jobs:
             cargo build --release
 
       - name: Test code example in Docker image (no_std)
+        if: matrix.env == 'no_std'
         uses: addnab/docker-run-action@v3
         with:
           image: wokwi/builder-rust-nostd-esp
@@ -61,5 +63,6 @@ jobs:
           run: |
             cat /home/esp/workspace/${{ matrix.target }}-${{ matrix.env }}-${{ matrix.project }}/main.rs > rust-project/src/main.rs
             cd rust-project
+            export IDF_PATH=/home/esp/.espressif/frameworks/esp-idf-release-v4.4
             . /home/esp/export-esp.sh
             cargo build --release
