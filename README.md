@@ -16,7 +16,7 @@
   - [Tempalte](https://wokwi.com/projects/345144250522927698)
   - [Blinky](https://wokwi.com/projects/361808947755817985)
 
-## `std`
+## `no_std`
 - ESP32
   - [Tempalte](https://wokwi.com/projects/341952531613614675)
   - [Blinky](https://wokwi.com/projects/341952826535051858)
