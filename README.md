@@ -1,5 +1,7 @@
 # Wokwi Projects
 
+[![CI](https://github.com/SergioGasquez/wokwi-projects/actions/workflows/ci.yml/badge.svg)](https://github.com/SergioGasquez/wokwi-projects/actions/workflows/ci.yml)
+
 ## `std`
 - ESP32
   - [Tempalte](https://wokwi.com/projects/338154815612781140)
