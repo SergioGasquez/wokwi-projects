@@ -6,14 +6,14 @@ edition = "2021"
 license = "MIT OR Apache-2.0"
 
 [dependencies]
-esp32s2-hal = "0.2.0"
-esp-backtrace = { version = "0.2.0", features = [
+esp32s2-hal = "0.8.0"
+esp-backtrace = { version = "0.6.0", features = [
     "esp32s2",
     "panic-handler",
     "print-uart",
 ] }
-xtensa-atomic-emulation-trap = "0.2.0"
-xtensa-lx-rt = { version = "0.13.0", features = ["esp32s2"], optional = true }
+xtensa-atomic-emulation-trap = "0.4.0"
+xtensa-lx-rt = { version = "0.15.0", features = ["esp32s2"], optional = true }
 
 [features]
 default = ["rt"]

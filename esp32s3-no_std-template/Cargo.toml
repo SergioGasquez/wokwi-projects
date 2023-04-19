@@ -6,15 +6,15 @@ edition = "2021"
 license = "MIT OR Apache-2.0"
 
 [dependencies]
-esp32s3-hal = "0.3.0"
-esp-alloc = { version = "0.1.0", features = ["oom-handler"] }
-esp-backtrace = { version = "0.3.0", features = [
+esp32s3-hal = "0.8.0"
+esp-alloc = { version = "0.2.0", features = ["oom-handler"] }
+esp-backtrace = { version = "0.6.0", features = [
     "esp32s3",
     "panic-handler",
     "print-uart",
 ] }
-esp-println = { version = "0.3.1", features = ["esp32s3"] }
-xtensa-lx-rt = { version = "0.13.0", features = ["esp32s3"], optional = true }
+esp-println = { version = "0.5.0", features = ["esp32s3"] }
+xtensa-lx-rt = { version = "0.15.0", features = ["esp32s3"], optional = true }
 
 [features]
 default = ["rt"]
