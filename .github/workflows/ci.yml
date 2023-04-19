@@ -52,7 +52,7 @@ jobs:
           run: |
             export IDF_PATH=/home/esp/.espressif/frameworks/esp-idf-release-v4.4
             . /home/esp/export-esp.sh
-            cat /home/esp/workspace/templates/rust-std-${{ matrix.target.name }}/main.rs > rust-project/src/main.rs
+            cat /home/esp/workspace/templates/rust-${{ matrix.target.name }}/main.rs > rust-project/src/main.rs
             cd rust-project
             cargo build --release
 
@@ -120,7 +120,7 @@ jobs:
           run: |
             export IDF_PATH=/home/esp/.espressif/frameworks/esp-idf-release-v4.4
             . /home/esp/export-esp.sh
-            cat /home/esp/workspace/examples/r${{ matrix.example.mcu }}-${{ matrix.example.env }}-${{ matrix.example.name }}/main.rs > rust-project/src/main.rs
+            cat /home/esp/workspace/examples/${{ matrix.example.mcu }}-${{ matrix.example.env }}-${{ matrix.example.name }}/main.rs > rust-project/src/main.rs
             cd rust-project
             cargo build --release
 
