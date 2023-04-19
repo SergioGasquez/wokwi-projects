@@ -4,21 +4,17 @@ name: CI
 on:
   push:
     paths-ignore:
-      - "book/"
-      - "book/**"
       - "**/README.md"
   pull_request:
     branches: [main]
     paths-ignore:
-      - "book/"
-      - "book/**"
       - "**/README.md"
   schedule:
     - cron: "50 7 * * *"
 
 jobs:
-  build-examples:
-    name: Test
+  build-projects:
+    name: Build ${{ matrix.target }}-${{ matrix.env }}-${{ matrix.project }}
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -29,10 +25,6 @@ jobs:
     steps:
       - name: Checkout the repository
         uses: actions/checkout@v3
-
-    #   - name: Update ownership
-    #     run: |
-    #       sudo chown 1000:1000 -R ${{ github.workspace }}
 
       - name: Pull Docker image (std)
         if: matrix.env == 'std'
