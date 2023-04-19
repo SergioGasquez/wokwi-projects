@@ -13,22 +13,31 @@ on:
     - cron: "50 7 * * *"
 
 jobs:
-  build-projects:
-    name: Build ${{ matrix.target }}-${{ matrix.env }}-${{ matrix.project }}
+  templates:
+    name: Build template | ${{ matrix.target.name }}-${{ matrix.env }}
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
         env: ["std", "no_std"]
-        target: ["esp32", "esp32s2", "esp32s3", "esp32c3"]
-        project: ["blinky", "template"]
+        target:
+          - mcu: "esp32"
+            name: "esp32"
+          - mcu: "esp32s2"
+            name: "esp32-s2"
+          - mcu: "esp32s3"
+            name: "esp32-s3"
+          - mcu: "esp32c3"
+            name: "esp32-c3"
+          - mcu: "esp32c3"
+            name: "esp32-rust-board"
     steps:
       - name: Checkout the repository
         uses: actions/checkout@v3
 
       - name: Pull Docker image (std)
         if: matrix.env == 'std'
-        run: docker image pull wokwi/builder-rust-std-${{ matrix.target }}
+        run: docker image pull wokwi/builder-rust-std-${{ matrix.target.mcu }}
 
       - name: Pull Docker image (no_std)
         if: matrix.env == 'no_std'
@@ -38,12 +47,12 @@ jobs:
         if: matrix.env == 'std'
         uses: addnab/docker-run-action@v3
         with:
-          image: wokwi/builder-rust-std-${{ matrix.target }}
+          image: wokwi/builder-rust-std-${{ matrix.target.muc }}
           options: -u esp -v ${{ github.workspace }}:/home/esp/workspace
           run: |
             export IDF_PATH=/home/esp/.espressif/frameworks/esp-idf-release-v4.4
             . /home/esp/export-esp.sh
-            cat /home/esp/workspace/${{ matrix.target }}-${{ matrix.env }}-${{ matrix.project }}/main.rs > rust-project/src/main.rs
+            cat /home/esp/workspace/templates/rust-${{ matrix.target.name }}/main.rs > rust-project/src/main.rs
             cd rust-project
             cargo build --release
 
@@ -55,7 +64,7 @@ jobs:
           options: -u esp -v ${{ github.workspace }}:/home/esp/workspace
           run: |
             . /home/esp/export-esp.sh
-            cat /home/esp/workspace/${{ matrix.target }}-no_std-${{ matrix.project }}/main.rs > rust-project-${{ matrix.target }}/src/main.rs
-            cat /home/esp/workspace/${{ matrix.target }}-no_std-${{ matrix.project }}/Cargo.toml > rust-project-${{ matrix.target }}/Cargo.toml
-            cd rust-project-${{ matrix.target }}
+            cat /home/esp/workspace/templates/rust-nostd-${{ matrix.target.name }}/main.rs > rust-project-${{ matrix.target.mcu }}/src/main.rs
+            cat /home/esp/workspace/templates/rust-nostd-${{ matrix.target.name }}/Cargo.toml > rust-project-${{ matrix.target.mcu }}/Cargo.toml
+            cd rust-project-${{ matrix.target.mcu }}
             cargo build --release
