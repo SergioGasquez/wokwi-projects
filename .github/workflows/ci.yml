@@ -48,7 +48,7 @@ jobs:
           image: wokwi/builder-rust-std-${{ matrix.target }}
           options: -u esp -v ${{ github.workspace }}:/home/esp/workspace
           run: |
-            cat ${{ matrix.target }}/${{ matrix.env }}/${{ matrix.project }}/main.rs > rust-project/src/main.rs
+            cat ${{ matrix.target }}-${{ matrix.env }}-${{ matrix.project }}/main.rs > rust-project/src/main.rs
             cargo build --release
 
       - name: Test code example in Docker image (no_std)
@@ -57,5 +57,5 @@ jobs:
           image: wokwi/builder-rust-nostd-esp
           options: -u esp -v ${{ github.workspace }}:/home/esp/workspace
           run: |
-            cat ${{ matrix.target }}/${{ matrix.env }}/${{ matrix.project }}/main.rs > rust-project/src/main.rs
+            cat ${{ matrix.target }}-${{ matrix.env }}-${{ matrix.project }}/main.rs > rust-project/src/main.rs
             cargo build --release
