@@ -6,7 +6,7 @@ edition = "2021"
 license = "MIT OR Apache-2.0"
 
 [dependencies]
-hal = "0.11.0"
+hal = { package = "esp32-hal", version = "0.11.0" }
 esp-backtrace = { version = "0.6.0", features = [
     "esp32",
     "panic-handler",
