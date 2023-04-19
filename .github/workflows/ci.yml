@@ -68,3 +68,71 @@ jobs:
             cat /home/esp/workspace/templates/rust-nostd-${{ matrix.target.name }}/Cargo.toml > rust-project-${{ matrix.target.mcu }}/Cargo.toml
             cd rust-project-${{ matrix.target.mcu }}
             cargo build --release
+  examples:
+    name: Build example | ${{ matrix.example.mcu }}-${{ matrix.example.env }}-${{ matrix.example.name }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        example:
+          - name: blinky_341952826535051858
+            env: nostd
+            mcu: esp32
+          - name: blinky_333363577816613460
+            env: std
+            mcu: esp32
+          - name: blinky_341956526159692371
+            env: nostd
+            mcu: esp32c3
+          - name: blinky_332188235906155092
+            env: std
+            mcu: esp32c3
+          - name: blinky_341955297469792851
+            env: nostd
+            mcu: esp32s2
+          - name: blinky_333363982163247699
+            env: std
+            mcu: esp32s2
+          - name: blinky_349568945405035090
+            env: nostd
+            mcu: esp32s3
+          - name: blinky_361808947755817985
+            env: std
+            mcu: esp32s3
+    steps:
+      - name: Checkout the repository
+        uses: actions/checkout@v3
+
+      - name: Pull Docker image (std)
+        if: matrix.example.env == 'std'
+        run: docker image pull wokwi/builder-rust-std-${{ matrix.example.mcu }}
+
+      - name: Pull Docker image (no_std)
+        if: matrix.example.env == 'no_std'
+        run: docker image pull wokwi/builder-rust-nostd-esp
+
+      - name: Test code example in Docker image (std)
+        if: matrix.example.env == 'std'
+        uses: addnab/docker-run-action@v3
+        with:
+          image: wokwi/builder-rust-std-${{ matrix.example.mcu }}
+          options: -u esp -v ${{ github.workspace }}:/home/esp/workspace
+          run: |
+            export IDF_PATH=/home/esp/.espressif/frameworks/esp-idf-release-v4.4
+            . /home/esp/export-esp.sh
+            cat /home/esp/workspace/examples/r${{ matrix.example.mcu }}-${{ matrix.example.env }}-${{ matrix.example.name }}/main.rs > rust-project/src/main.rs
+            cd rust-project
+            cargo build --release
+
+      - name: Test code example in Docker image (no_std)
+        if: matrix.example.env == 'no_std'
+        uses: addnab/docker-run-action@v3
+        with:
+          image: wokwi/builder-rust-nostd-esp
+          options: -u esp -v ${{ github.workspace }}:/home/esp/workspace
+          run: |
+            . /home/esp/export-esp.sh
+            cat /home/esp/workspace/examples/${{ matrix.example.mcu }}-${{ matrix.example.env }}-${{ matrix.example.name }}/main.rs > rust-project-${{ matrix.example.mcu }}/src/main.rs
+            cat /home/esp/workspace/examples/${{ matrix.example.mcu }}-${{ matrix.example.env }}-${{ matrix.example.name }}/Cargo.toml > rust-project-${{ matrix.example.mcu }}/Cargo.toml
+            cd rust-project-${{ matrix.example.mcu }}
+            cargo build --release
