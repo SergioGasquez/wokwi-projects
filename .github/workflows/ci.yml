@@ -63,6 +63,7 @@ jobs:
           options: -u esp -v ${{ github.workspace }}:/home/esp/workspace
           run: |
             cat /home/esp/workspace/${{ matrix.target }}-no_std-${{ matrix.project }}/main.rs > rust-project-${{ matrix.target }}/src/main.rs
+            cat /home/esp/workspace/${{ matrix.target }}-no_std-${{ matrix.project }}/Cargo.toml > rust-project-${{ matrix.target }}/Cargo.toml
             cd rust-project-${{ matrix.target }}
             . /home/esp/export-esp.sh
             cargo build --release

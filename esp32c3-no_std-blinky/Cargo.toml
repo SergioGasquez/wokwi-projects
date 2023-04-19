@@ -1,0 +1,20 @@
+[package]
+name = "rust_project_esp32c3"
+version = "0.1.0"
+authors = ["Sergio Gasquez <sergio.gasquez@gmail.com>"]
+edition = "2021"
+license = "MIT OR Apache-2.0"
+
+[dependencies]
+esp32c3-hal = "0.2.0"
+esp-println = { version = "0.3.0", features = ["esp32c3"] }
+esp-backtrace = { version = "0.2.0", features = [
+    "esp32c3",
+    "panic-handler",
+    "print-uart",
+] }
+riscv-rt = { version = "0.9", optional = true }
+
+[features]
+default = ["rt"]
+rt = ["riscv-rt"]
