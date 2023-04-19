@@ -46,7 +46,7 @@ jobs:
             cd rust-project
             export IDF_PATH=/home/esp/.espressif/frameworks/esp-idf-release-v4.4
             . /home/esp/export-esp.sh
-            cargo build --release
+            cargo clean && cargo build --release
 
       - name: Test code example in Docker image (no_std)
         if: matrix.env == 'no_std'
