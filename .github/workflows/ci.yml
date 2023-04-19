@@ -27,12 +27,12 @@ jobs:
         target: ["esp32", "esp32s2", "esp32s3", "esp32c3"]
         project: ["blinky", "template"]
     steps:
-      - name: Checkout the repository
-        uses: actions/checkout@v3
+    #   - name: Checkout the repository
+    #     uses: actions/checkout@v3
 
-      - name: Update ownership
-        run: |
-          sudo chown 1000:1000 -R ${{ github.workspace }}
+    #   - name: Update ownership
+    #     run: |
+    #       sudo chown 1000:1000 -R ${{ github.workspace }}
 
       - name: Pull Docker image (std)
         if: matrix.env == 'std'
@@ -48,8 +48,6 @@ jobs:
           image: wokwi/builder-rust-std-${{ matrix.target }}
           options: -u esp -v ${{ github.workspace }}:/home/esp/workspace
           run: |
-            pwd
-            ls /home/esp/workspace
             cat /home/esp/workspace/${{ matrix.target }}-${{ matrix.env }}-${{ matrix.project }}/main.rs > rust-project/src/main.rs
             cd rust-project
             cargo build --release
@@ -60,8 +58,6 @@ jobs:
           image: wokwi/builder-rust-nostd-esp
           options: -u esp -v ${{ github.workspace }}:/home/esp/workspace
           run: |
-            pwd
-            ls /home/esp/workspace
             cat /home/esp/workspace/${{ matrix.target }}-${{ matrix.env }}-${{ matrix.project }}/main.rs > rust-project/src/main.rs
             cd rust-project
             cargo build --release
