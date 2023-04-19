@@ -27,8 +27,8 @@ jobs:
         target: ["esp32", "esp32s2", "esp32s3", "esp32c3"]
         project: ["blinky", "template"]
     steps:
-    #   - name: Checkout the repository
-    #     uses: actions/checkout@v3
+      - name: Checkout the repository
+        uses: actions/checkout@v3
 
     #   - name: Update ownership
     #     run: |
