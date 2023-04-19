@@ -34,7 +34,7 @@ fn main() -> ! {
     // Initialize the Delay peripheral, and use it to toggle the LED state in a
     // loop.
     let mut delay = Delay::new(&clocks);
-    esp_println::println!("Hello, World");
+    esp_println::println!("Hello, World")
 
     loop {
         esp_println::println!("Hello, World");
