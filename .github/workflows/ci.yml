@@ -47,7 +47,7 @@ jobs:
         if: matrix.env == 'std'
         uses: addnab/docker-run-action@v3
         with:
-          image: wokwi/builder-rust-std-${{ matrix.target.muc }}
+          image: wokwi/builder-rust-std-${{ matrix.target.mcu }}
           options: -u esp -v ${{ github.workspace }}:/home/esp/workspace
           run: |
             export IDF_PATH=/home/esp/.espressif/frameworks/esp-idf-release-v4.4
