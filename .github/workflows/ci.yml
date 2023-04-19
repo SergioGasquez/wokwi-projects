@@ -14,7 +14,7 @@ on:
 
 jobs:
   templates:
-    name: Build template | ${{ matrix.target.name }}-${{ matrix.env }}
+    name: Template | ${{ matrix.target.name }}-${{ matrix.env }}
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -69,7 +69,7 @@ jobs:
             cd rust-project-${{ matrix.target.mcu }}
             cargo build --release
   examples:
-    name: Build example | ${{ matrix.example.mcu }}-${{ matrix.example.env }}-${{ matrix.example.name }}
+    name: Example | ${{ matrix.example.mcu }}-${{ matrix.example.env }}-${{ matrix.example.name }}
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
