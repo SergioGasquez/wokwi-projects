@@ -29,10 +29,12 @@ jobs:
     steps:
       - name: Checkout the repository
         uses: actions/checkout@v3
+        with:
+          path: /home/runner/work/wokwi-projects/
 
       - name: Update ownership
         run: |
-          sudo chown 1000:1000 -R ${{ github.workspace }}
+          sudo chown 1000:1000 -R /home/runner/work/wokwi-projects/${{ matrix.target }}-${{ matrix.env }}-${{ matrix.project }}
 
       - name: Pull Docker image (std)
         if: matrix.env == 'std'
@@ -48,7 +50,7 @@ jobs:
           image: wokwi/builder-rust-std-${{ matrix.target }}
           options: -u esp -v ${{ github.workspace }}:/home/esp/workspace
           run: |
-            cat ${{ matrix.target }}-${{ matrix.env }}-${{ matrix.project }}/main.rs > rust-project/src/main.rs
+            cat /home/runner/work/wokwi-projects/${{ matrix.target }}-${{ matrix.env }}-${{ matrix.project }}/main.rs > rust-project/src/main.rs
             cd rust-project
             cargo build --release
 
@@ -58,6 +60,6 @@ jobs:
           image: wokwi/builder-rust-nostd-esp
           options: -u esp -v ${{ github.workspace }}:/home/esp/workspace
           run: |
-            cat ${{ matrix.target }}-${{ matrix.env }}-${{ matrix.project }}/main.rs > rust-project/src/main.rs
+            cat /home/runner/work/wokwi-projects/${{ matrix.target }}-${{ matrix.env }}-${{ matrix.project }}/main.rs > rust-project/src/main.rs
             cd rust-project
             cargo build --release
