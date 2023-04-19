@@ -49,6 +49,7 @@ jobs:
           options: -u esp -v ${{ github.workspace }}:/home/esp/workspace
           run: |
             cat ${{ matrix.target }}-${{ matrix.env }}-${{ matrix.project }}/main.rs > rust-project/src/main.rs
+            cd rust-project
             cargo build --release
 
       - name: Test code example in Docker image (no_std)
@@ -58,4 +59,5 @@ jobs:
           options: -u esp -v ${{ github.workspace }}:/home/esp/workspace
           run: |
             cat ${{ matrix.target }}-${{ matrix.env }}-${{ matrix.project }}/main.rs > rust-project/src/main.rs
+            cd rust-project
             cargo build --release
