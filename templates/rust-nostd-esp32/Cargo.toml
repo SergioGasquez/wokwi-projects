@@ -7,7 +7,7 @@ license = "MIT OR Apache-2.0"
 
 [dependencies]
 hal = { package = "esp32-hal", version = "0.11.0" }
-esp-backtrace = { version = "0.6.0", features = [
+esp-backtrace = { version = "0.7.0", features = [
     "esp32",
     "panic-handler",
     "print-uart",
