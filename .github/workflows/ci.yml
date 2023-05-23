@@ -76,25 +76,25 @@ jobs:
       matrix:
         example:
           - name: blinky_341952826535051858
-            env: nostd
+            env: no_std
             mcu: esp32
           - name: blinky_333363577816613460
             env: std
             mcu: esp32
           - name: blinky_341956526159692371
-            env: nostd
+            env: no_std
             mcu: esp32c3
           - name: blinky_332188235906155092
             env: std
             mcu: esp32c3
           - name: blinky_341955297469792851
-            env: nostd
+            env: no_std
             mcu: esp32s2
           - name: blinky_333363982163247699
             env: std
             mcu: esp32s2
           - name: blinky_349568945405035090
-            env: nostd
+            env: no_std
             mcu: esp32s3
           - name: blinky_361808947755817985
             env: std
