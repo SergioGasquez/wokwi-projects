@@ -142,7 +142,7 @@ jobs:
         uses: wokwi/wokwi-ci-action@v1
         with:
           token: ${{ secrets.WOKWI_CLI_TOKEN }}
-          path: ${{ matrix.example.mcu }}-${{ matrix.example.env }}-${{ matrix.example.name }}
+          path: examples/${{ matrix.example.mcu }}-${{ matrix.example.env }}-${{ matrix.example.name }}
           timeout: 10000
           expect_text: 'Hello, world!'
           fail_text: 'Error'
