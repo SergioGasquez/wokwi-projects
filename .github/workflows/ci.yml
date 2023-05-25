@@ -74,6 +74,7 @@ jobs:
             cargo build --release --out-dir /home/esp/workspace/templates/rust-nostd-${{ matrix.target.name }} -Z unstable-options
 
       - name: Wokwi CI check (std)
+        if: matrix.env == 'std'
         uses: wokwi/wokwi-ci-action@v1
         with:
           token: ${{ secrets.WOKWI_CLI_TOKEN }}
@@ -83,6 +84,7 @@ jobs:
           fail_text: 'Error'
 
       - name: Wokwi CI check (nostd)
+        if: matrix.env == 'nostd'
         uses: wokwi/wokwi-ci-action@v1
         with:
           token: ${{ secrets.WOKWI_CLI_TOKEN }}
