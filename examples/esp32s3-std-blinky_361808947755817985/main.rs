@@ -15,7 +15,7 @@ fn main() -> anyhow::Result<()> {
     let peripherals = Peripherals::take().unwrap();
     let mut led = PinDriver::output(peripherals.pins.gpio4)?;
 
-    println!("Hello World");
+    println!("Hello World!");
     loop {
         led.set_high()?;
         // we are sleeping here to make sure the watchdog isn't triggered
