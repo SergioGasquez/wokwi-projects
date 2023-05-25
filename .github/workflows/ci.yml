@@ -49,8 +49,8 @@ jobs:
             . /home/esp/export-esp.sh
             export CARGO_INCREMENTAL=0
             export RUSTC_WRAPPER=$(which sccache)
-            cat /home/esp/workspace/templates/rust-${{ matrix.target.name }}/*.rs > rust-project/src/*.rs
-            cat /home/esp/workspace/templates/rust-${{ matrix.target.name }}/Cargo.toml > rust-project/src/Cargo.toml
+            cat /home/esp/workspace/templates/rust-${{ matrix.target.name }}/*.rs > rust-project-${{ matrix.target.mcu }}/src/*.rs
+            cat /home/esp/workspace/templates/rust-${{ matrix.target.name }}/Cargo.toml > rust-project-${{ matrix.target.mcu }}/Cargo.toml
             cd rust-project-${{ matrix.target.mcu }}
             cargo build --release
 
