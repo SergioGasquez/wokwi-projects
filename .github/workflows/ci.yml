@@ -148,5 +148,5 @@ jobs:
           token: ${{ secrets.WOKWI_CLI_TOKEN }}
           path: examples/${{ matrix.example.mcu }}-${{ matrix.example.env }}-${{ matrix.example.name }}
           timeout: 10000
-          expect_text: 'Hello, world!'
+          expect_text: 'Hello world!'
           fail_text: 'Error'
