@@ -138,6 +138,11 @@ jobs:
             cd rust-project-${{ matrix.example.mcu }}
             cargo build --release
 
+      - name: Debug
+        run: |
+          pwd
+          ls examples/${{ matrix.example.mcu }}-${{ matrix.example.env }}-${{ matrix.example.name }}
+
       - name: Wokwi CI check
         uses: wokwi/wokwi-ci-action@v1
         with:
