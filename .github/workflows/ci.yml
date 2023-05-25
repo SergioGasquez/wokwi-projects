@@ -36,25 +36,20 @@ jobs:
       - name: Checkout the repository
         uses: actions/checkout@v3
 
-      - name: Pull Docker image (std)
-        if: matrix.env == 'std'
-        run: docker image pull wokwi/builder-rust-std-${{ matrix.target.mcu }}
-
-      - name: Pull Docker image (nostd)
-        if: matrix.env == 'nostd'
-        run: docker image pull wokwi/builder-rust-nostd-esp
+      - name: Pull Docker image
+        run: docker image pull wokwi/builder-rust-${{ matrix.env }}-esp
 
       - name: Test code example in Docker image (std)
         if: matrix.env == 'std'
         uses: addnab/docker-run-action@v3
         with:
-          image: wokwi/builder-rust-std-${{ matrix.target.mcu }}
+          image: wokwi/builder-rust-${{ matrix.env }}-esp
           options: -u esp -v ${{ github.workspace }}:/home/esp/workspace
           run: |
-            export IDF_PATH=/home/esp/.espressif/frameworks/esp-idf-release-v4.4
             . /home/esp/export-esp.sh
-            cat /home/esp/workspace/templates/rust-${{ matrix.target.name }}/main.rs > rust-project/src/main.rs
-            cd rust-project
+            cat /home/esp/workspace/templates/rust-${{ matrix.target.name }}/*.rs > rust-project/src/*.rs
+            cat /home/esp/workspace/templates/rust-${{ matrix.target.name }}/Cargo.toml > rust-project/src/Cargo.toml
+            cd rust-project-${{ matrix.target.mcu }}
             cargo build --release
 
       - name: Test code example in Docker image (nostd)
@@ -65,10 +60,11 @@ jobs:
           options: -u esp -v ${{ github.workspace }}:/home/esp/workspace
           run: |
             . /home/esp/export-esp.sh
-            cat /home/esp/workspace/templates/rust-nostd-${{ matrix.target.name }}/main.rs > rust-project-${{ matrix.target.mcu }}/src/main.rs
+            cat /home/esp/workspace/templates/rust-nostd-${{ matrix.target.name }}/*.rs > rust-project-${{ matrix.target.mcu }}/src/*.rs
             cat /home/esp/workspace/templates/rust-nostd-${{ matrix.target.name }}/Cargo.toml > rust-project-${{ matrix.target.mcu }}/Cargo.toml
             cd rust-project-${{ matrix.target.mcu }}
             cargo build --release
+
   examples:
     name: Example | ${{ matrix.example.mcu }}-${{ matrix.example.env }}-${{ matrix.example.name }}
     runs-on: ubuntu-latest
