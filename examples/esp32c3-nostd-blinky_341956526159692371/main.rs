@@ -1,6 +1,6 @@
 //! Blinks an LED
 //!
-//! This assumes that a LED is connected to the pin assigned to `led`. (GPIO5)
+//! This assumes that a LED is connected to the pin assigned to `led`. (GPIO4)
 
 #![no_std]
 #![no_main]
@@ -39,9 +39,9 @@ fn main() -> ! {
     wdt0.disable();
     wdt1.disable();
 
-    // Set GPIO5 as an output, and set its state high initially.
+    // Set GPIO4 as an output, and set its state high initially.
     let io = IO::new(peripherals.GPIO, peripherals.IO_MUX);
-    let mut led = io.pins.gpio5.into_push_pull_output();
+    let mut led = io.pins.gpio4.into_push_pull_output();
 
     led.set_high().unwrap();
 
