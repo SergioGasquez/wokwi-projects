@@ -101,35 +101,35 @@ jobs:
       matrix:
         example:
           - name: blinky
-            id: 341952826535051858
+            id: "341952826535051858"
             env: nostd
             mcu: esp32
           - name: blinky
-            id: 333363577816613460
+            id: "333363577816613460"
             env: std
             mcu: esp32
           - name: blinky
-            id: 341956526159692371
+            id: "341956526159692371"
             env: nostd
             mcu: esp32c3
           - name: blinky
-            id: 332188235906155092
+            id: "332188235906155092"
             env: std
             mcu: esp32c3
           - name: blinky
-            id: 341955297469792851
+            id: "341955297469792851"
             env: nostd
             mcu: esp32s2
           - name: blinky
-            id: 333363982163247699
+            id: "333363982163247699"
             env: std
             mcu: esp32s2
           - name: blinky
-            id: 349568945405035090
+            id: "349568945405035090"
             env: nostd
             mcu: esp32s3
           - name: blinky
-            id: 361808947755817985
+            id: "361808947755817985"
             env: std
             mcu: esp32s3
     steps:
