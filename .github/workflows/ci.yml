@@ -104,6 +104,10 @@ jobs:
       - name: Checkout the repository
         uses: actions/checkout@v3
 
+      - name: Update ownership
+        run: |
+          sudo chown 1000:1000 -R examples/${{ matrix.example.mcu }}-${{ matrix.example.env }}-${{ matrix.example.name }}
+
       - name: Pull Docker image (std)
         if: matrix.example.env == 'std'
         run: docker image pull wokwi/builder-rust-std-${{ matrix.example.mcu }}
