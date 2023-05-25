@@ -112,7 +112,6 @@ jobs:
         run: docker image pull wokwi/builder-rust-${{ matrix.example.env }}-esp
 
       - name: Test code example in Docker image
-        if: matrix.example.env == 'std'
         uses: addnab/docker-run-action@v3
         with:
           image: wokwi/builder-rust-${{ matrix.example.env }}-esp
