@@ -6,6 +6,7 @@
 #![no_main]
 
 use esp_backtrace as _;
+use esp_println::println;
 use hal::{
     clock::ClockControl, gpio::IO, peripherals::Peripherals, prelude::*, timer::TimerGroup, Delay,
     Rtc,
