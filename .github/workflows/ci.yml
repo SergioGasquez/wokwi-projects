@@ -108,13 +108,8 @@ jobs:
         run: |
           sudo chown 1000:1000 -R examples/${{ matrix.example.mcu }}-${{ matrix.example.env }}-${{ matrix.example.name }}
 
-      - name: Pull Docker image (std)
-        if: matrix.example.env == 'std'
-        run: docker image pull wokwi/builder-rust-std-${{ matrix.example.mcu }}
-
-      - name: Pull Docker image (no_std)
-        if: matrix.example.env == 'nostd'
-        run: docker image pull wokwi/builder-rust-nostd-esp
+      - name: Pull Docker image
+        run: docker image pull wokwi/builder-rust-${{ matrix.example.env }}-esp
 
       - name: Test code example in Docker image (std)
         if: matrix.example.env == 'std'
@@ -125,9 +120,9 @@ jobs:
           run: |
             export IDF_PATH=/home/esp/.espressif/frameworks/esp-idf-release-v4.4
             . /home/esp/export-esp.sh
-            cat /home/esp/workspace/examples/${{ matrix.example.mcu }}-${{ matrix.example.env }}-${{ matrix.example.name }}/*.rs > rust-project/src/*.rs
-            cat /home/esp/workspace/examples/${{ matrix.example.mcu }}-${{ matrix.example.env }}-${{ matrix.example.name }}/Cargo.toml > rust-project/Cargo.toml
-            cd rust-project
+            cat /home/esp/workspace/examples/${{ matrix.example.mcu }}-${{ matrix.example.env }}-${{ matrix.example.name }}/*.rs > rust-project-${{ matrix.example.mcu }}/src/*.rs
+            cat /home/esp/workspace/examples/${{ matrix.example.mcu }}-${{ matrix.example.env }}-${{ matrix.example.name }}/Cargo.toml > rust-project-${{ matrix.example.mcu }}/Cargo.toml
+            cd rust-project-${{ matrix.example.mcu }}
             cargo build --release --out-dir /home/esp/workspace/examples/${{ matrix.example.mcu }}-${{ matrix.example.env }}-${{ matrix.example.name }} -Z unstable-options
 
       - name: Test code example in Docker image (no_std)
