@@ -94,34 +94,42 @@ jobs:
           fail_text: 'Error'
 
   examples:
-    name: Example | ${{ matrix.example.mcu }}-${{ matrix.example.env }}-${{ matrix.example.name }}
+    name: Example | ${{ matrix.example.mcu }}-${{ matrix.example.env }}-${{ matrix.example.name }}_${{ matrix.example.id }}
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
         example:
-          - name: blinky_341952826535051858
+          - name: blinky
+            id: 341952826535051858
             env: nostd
             mcu: esp32
-          - name: blinky_333363577816613460
+          - name: blinky
+            id: 333363577816613460
             env: std
             mcu: esp32
-          - name: blinky_341956526159692371
+          - name: blinky
+            id: 341956526159692371
             env: nostd
             mcu: esp32c3
-          - name: blinky_332188235906155092
+          - name: blinky
+            id: 332188235906155092
             env: std
             mcu: esp32c3
-          - name: blinky_341955297469792851
+          - name: blinky
+            id: 341955297469792851
             env: nostd
             mcu: esp32s2
-          - name: blinky_333363982163247699
+          - name: blinky
+            id: 333363982163247699
             env: std
             mcu: esp32s2
-          - name: blinky_349568945405035090
+          - name: blinky
+            id: 349568945405035090
             env: nostd
             mcu: esp32s3
-          - name: blinky_361808947755817985
+          - name: blinky
+            id: 361808947755817985
             env: std
             mcu: esp32s3
     steps:
@@ -130,7 +138,7 @@ jobs:
 
       - name: Update ownership
         run: |
-          sudo chown 1000:1000 -R examples/${{ matrix.example.mcu }}-${{ matrix.example.env }}-${{ matrix.example.name }}
+          sudo chown 1000:1000 -R examples/${{ matrix.example.mcu }}-${{ matrix.example.env }}-${{ matrix.example.name }}_${{ matrix.example.id }}
 
       - name: Pull Docker image
         run: docker image pull wokwi/builder-rust-${{ matrix.example.env }}-esp
@@ -144,16 +152,16 @@ jobs:
             . /home/esp/export-esp.sh
             export CARGO_INCREMENTAL=0
             export RUSTC_WRAPPER=$(which sccache)
-            cp /home/esp/workspace/examples/${{ matrix.example.mcu }}-${{ matrix.example.env }}-${{ matrix.example.name }}/*.rs rust-project-${{ matrix.example.mcu }}/src/
-            cat /home/esp/workspace/examples/${{ matrix.example.mcu }}-${{ matrix.example.env }}-${{ matrix.example.name }}/Cargo.toml > rust-project-${{ matrix.example.mcu }}/Cargo.toml
+            cp /home/esp/workspace/examples/${{ matrix.example.mcu }}-${{ matrix.example.env }}-${{ matrix.example.name }}_${{ matrix.example.id }}/*.rs rust-project-${{ matrix.example.mcu }}/src/
+            cat /home/esp/workspace/examples/${{ matrix.example.mcu }}-${{ matrix.example.env }}-${{ matrix.example.name }}_${{ matrix.example.id }}/Cargo.toml > rust-project-${{ matrix.example.mcu }}/Cargo.toml
             cd rust-project-${{ matrix.example.mcu }}
-            cargo build --release --out-dir /home/esp/workspace/examples/${{ matrix.example.mcu }}-${{ matrix.example.env }}-${{ matrix.example.name }} -Z unstable-options
+            cargo build --release --out-dir /home/esp/workspace/examples/${{ matrix.example.mcu }}-${{ matrix.example.env }}-${{ matrix.example.name }}_${{ matrix.example.id }} -Z unstable-options
 
       - name: Wokwi CI check
         uses: wokwi/wokwi-ci-action@v1
         with:
           token: ${{ secrets.WOKWI_CLI_TOKEN }}
-          path: examples/${{ matrix.example.mcu }}-${{ matrix.example.env }}-${{ matrix.example.name }}
+          path: examples/${{ matrix.example.mcu }}-${{ matrix.example.env }}-${{ matrix.example.name }}_${{ matrix.example.id }}
           timeout: 10000
           expect_text: 'Hello world!'
           fail_text: 'Error'
