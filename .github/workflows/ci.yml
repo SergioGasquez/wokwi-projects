@@ -136,8 +136,8 @@ jobs:
             cat /home/esp/workspace/examples/${{ matrix.example.mcu }}-${{ matrix.example.env }}-${{ matrix.example.name }}/*.rs > rust-project-${{ matrix.example.mcu }}/src/*.rs
             cat /home/esp/workspace/examples/${{ matrix.example.mcu }}-${{ matrix.example.env }}-${{ matrix.example.name }}/Cargo.toml > rust-project-${{ matrix.example.mcu }}/Cargo.toml
             cd rust-project-${{ matrix.example.mcu }}
-            cargo build --release --out-dir /home/esp/workspace/examples/${{ matrix.example.mcu }}-${{ matrix.example.env }}-${{ matrix.example.name }} -Z unstable-options
-
+            cargo build --release
+            cp -r target /home/esp/workspace/examples/${{ matrix.example.mcu }}-${{ matrix.example.env }}-${{ matrix.example.name }}
       - name: Debug
         run: |
           pwd
