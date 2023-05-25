@@ -52,7 +52,7 @@ jobs:
             cat /home/esp/workspace/templates/rust-${{ matrix.target.name }}/*.rs > rust-project-${{ matrix.target.mcu }}/src/*.rs
             cat /home/esp/workspace/templates/rust-${{ matrix.target.name }}/Cargo.toml > rust-project-${{ matrix.target.mcu }}/Cargo.toml
             cd rust-project-${{ matrix.target.mcu }}
-            cargo build --release --out-dir /home/esp/workspace/examples/${{ matrix.example.mcu }}-${{ matrix.example.env }}-${{ matrix.example.name }} -Z unstable-options
+            cargo build --release --out-dir /home/esp/workspace/templates/rust-${{ matrix.target.name }} -Z unstable-options
 
       - name: Test code example in Docker image (nostd)
         if: matrix.env == 'nostd'
@@ -67,7 +67,7 @@ jobs:
             cat /home/esp/workspace/templates/rust-nostd-${{ matrix.target.name }}/*.rs > rust-project-${{ matrix.target.mcu }}/src/*.rs
             cat /home/esp/workspace/templates/rust-nostd-${{ matrix.target.name }}/Cargo.toml > rust-project-${{ matrix.target.mcu }}/Cargo.toml
             cd rust-project-${{ matrix.target.mcu }}
-            cargo build --release --out-dir /home/esp/workspace/examples/${{ matrix.example.mcu }}-${{ matrix.example.env }}-${{ matrix.example.name }} -Z unstable-options
+            cargo build --release --out-dir /home/esp/workspace/templates/rust-nostd-${{ matrix.target.name }} -Z unstable-options
 
       - name: Wokwi CI check (std)
         uses: wokwi/wokwi-ci-action@v1
