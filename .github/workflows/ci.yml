@@ -53,7 +53,7 @@ jobs:
             . /home/esp/export-esp.sh
             export CARGO_INCREMENTAL=0
             export RUSTC_WRAPPER=$(which sccache)
-            cat /home/esp/workspace/templates/rust-${{ matrix.target.name }}/*.rs > rust-project-${{ matrix.target.mcu }}/src/*.rs
+            cp /home/esp/workspace/templates/rust-${{ matrix.target.name }}/*.rs rust-project-${{ matrix.target.mcu }}/src/
             cat /home/esp/workspace/templates/rust-${{ matrix.target.name }}/Cargo.toml > rust-project-${{ matrix.target.mcu }}/Cargo.toml
             cd rust-project-${{ matrix.target.mcu }}
             cargo build --release --out-dir /home/esp/workspace/templates/rust-${{ matrix.target.name }} -Z unstable-options
@@ -68,7 +68,7 @@ jobs:
             . /home/esp/export-esp.sh
             export CARGO_INCREMENTAL=0
             export RUSTC_WRAPPER=$(which sccache)
-            cat /home/esp/workspace/templates/rust-nostd-${{ matrix.target.name }}/*.rs > rust-project-${{ matrix.target.mcu }}/src/*.rs
+            cp /home/esp/workspace/templates/rust-nostd-${{ matrix.target.name }}/*.rs rust-project-${{ matrix.target.mcu }}/src/
             cat /home/esp/workspace/templates/rust-nostd-${{ matrix.target.name }}/Cargo.toml > rust-project-${{ matrix.target.mcu }}/Cargo.toml
             cd rust-project-${{ matrix.target.mcu }}
             cargo build --release --out-dir /home/esp/workspace/templates/rust-nostd-${{ matrix.target.name }} -Z unstable-options
@@ -142,7 +142,7 @@ jobs:
             . /home/esp/export-esp.sh
             export CARGO_INCREMENTAL=0
             export RUSTC_WRAPPER=$(which sccache)
-            cat /home/esp/workspace/examples/${{ matrix.example.mcu }}-${{ matrix.example.env }}-${{ matrix.example.name }}/*.rs > rust-project-${{ matrix.example.mcu }}/src/*.rs
+            cp /home/esp/workspace/examples/${{ matrix.example.mcu }}-${{ matrix.example.env }}-${{ matrix.example.name }}/*.rs rust-project-${{ matrix.example.mcu }}/src/
             cat /home/esp/workspace/examples/${{ matrix.example.mcu }}-${{ matrix.example.env }}-${{ matrix.example.name }}/Cargo.toml > rust-project-${{ matrix.example.mcu }}/Cargo.toml
             cd rust-project-${{ matrix.example.mcu }}
             cargo build --release --out-dir /home/esp/workspace/examples/${{ matrix.example.mcu }}-${{ matrix.example.env }}-${{ matrix.example.name }} -Z unstable-options
