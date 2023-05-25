@@ -1,4 +1,4 @@
 [wokwi]
 version = 1
-firmware = 'target/xtensa-esp32-espidf/release/rust-project-esp32'
-elf = 'target/xtensa-esp32-espidf/release/rust-project-esp32'
+firmware = 'rust-project-esp32'
+elf = 'rust-project-esp32'

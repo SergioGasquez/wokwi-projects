@@ -127,7 +127,7 @@ jobs:
             . /home/esp/export-esp.sh
             cat /home/esp/workspace/examples/${{ matrix.example.mcu }}-${{ matrix.example.env }}-${{ matrix.example.name }}/*.rs > rust-project/src/*.rs
             cd rust-project
-            cargo build --release
+            cargo build --release --out-dir /home/esp/workspace/examples/${{ matrix.example.mcu }}-${{ matrix.example.env }}-${{ matrix.example.name }} -Z unstable-options
 
       - name: Test code example in Docker image (no_std)
         if: matrix.example.env == 'nostd'
@@ -140,12 +140,7 @@ jobs:
             cat /home/esp/workspace/examples/${{ matrix.example.mcu }}-${{ matrix.example.env }}-${{ matrix.example.name }}/*.rs > rust-project-${{ matrix.example.mcu }}/src/*.rs
             cat /home/esp/workspace/examples/${{ matrix.example.mcu }}-${{ matrix.example.env }}-${{ matrix.example.name }}/Cargo.toml > rust-project-${{ matrix.example.mcu }}/Cargo.toml
             cd rust-project-${{ matrix.example.mcu }}
-            cargo build --release
-            cp -r target /home/esp/workspace/examples/${{ matrix.example.mcu }}-${{ matrix.example.env }}-${{ matrix.example.name }}
-      - name: Debug
-        run: |
-          pwd
-          ls examples/${{ matrix.example.mcu }}-${{ matrix.example.env }}-${{ matrix.example.name }}
+            cargo build --release --out-dir /home/esp/workspace/examples/${{ matrix.example.mcu }}-${{ matrix.example.env }}-${{ matrix.example.name }} -Z unstable-options
 
       - name: Wokwi CI check
         uses: wokwi/wokwi-ci-action@v1
