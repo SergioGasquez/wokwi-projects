@@ -36,6 +36,10 @@ jobs:
       - name: Checkout the repository
         uses: actions/checkout@v3
 
+      - name: Update ownership
+        run: |
+          sudo chown 1000:1000 -R templates
+
       - name: Pull Docker image
         run: docker image pull wokwi/builder-rust-${{ matrix.env }}-esp
 
@@ -73,7 +77,7 @@ jobs:
         uses: wokwi/wokwi-ci-action@v1
         with:
           token: ${{ secrets.WOKWI_CLI_TOKEN }}
-          path: rust-${{ matrix.target.name }}
+          path: templates/rust-${{ matrix.target.name }}
           timeout: 10000
           expect_text: 'Hello world!'
           fail_text: 'Error'
@@ -82,7 +86,7 @@ jobs:
         uses: wokwi/wokwi-ci-action@v1
         with:
           token: ${{ secrets.WOKWI_CLI_TOKEN }}
-          path: rust-nostd-${{ matrix.target.name }}
+          path: templates/rust-nostd-${{ matrix.target.name }}
           timeout: 10000
           expect_text: 'Hello world!'
           fail_text: 'Error'
