@@ -157,6 +157,9 @@ jobs:
             cd rust-project-${{ matrix.example.mcu }}
             cargo build --release --out-dir /home/esp/workspace/examples/${{ matrix.example.mcu }}-${{ matrix.example.env }}-${{ matrix.example.name }}_${{ matrix.example.id }} -Z unstable-options
 
+      - name: Get diagram
+        run: wget -o examples/${{ matrix.example.mcu }}-${{ matrix.example.env }}-${{ matrix.example.name }}_${{ matrix.example.id }}/diagram.json  https://wokwi.com/api/projects/${{ matrix.example.id }}/diagram.json
+
       - name: Wokwi CI check
         uses: wokwi/wokwi-ci-action@v1
         with:
