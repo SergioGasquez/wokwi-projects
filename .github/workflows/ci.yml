@@ -47,6 +47,8 @@ jobs:
           options: -u esp -v ${{ github.workspace }}:/home/esp/workspace
           run: |
             . /home/esp/export-esp.sh
+            export CARGO_INCREMENTAL=0
+            export RUSTC_WRAPPER=$(which sccache)
             cat /home/esp/workspace/templates/rust-${{ matrix.target.name }}/*.rs > rust-project/src/*.rs
             cat /home/esp/workspace/templates/rust-${{ matrix.target.name }}/Cargo.toml > rust-project/src/Cargo.toml
             cd rust-project-${{ matrix.target.mcu }}
@@ -60,6 +62,8 @@ jobs:
           options: -u esp -v ${{ github.workspace }}:/home/esp/workspace
           run: |
             . /home/esp/export-esp.sh
+            export CARGO_INCREMENTAL=0
+            export RUSTC_WRAPPER=$(which sccache)
             cat /home/esp/workspace/templates/rust-nostd-${{ matrix.target.name }}/*.rs > rust-project-${{ matrix.target.mcu }}/src/*.rs
             cat /home/esp/workspace/templates/rust-nostd-${{ matrix.target.name }}/Cargo.toml > rust-project-${{ matrix.target.mcu }}/Cargo.toml
             cd rust-project-${{ matrix.target.mcu }}
@@ -114,6 +118,8 @@ jobs:
           options: -u esp -v ${{ github.workspace }}:/home/esp/workspace
           run: |
             . /home/esp/export-esp.sh
+            export CARGO_INCREMENTAL=0
+            export RUSTC_WRAPPER=$(which sccache)
             cat /home/esp/workspace/examples/${{ matrix.example.mcu }}-${{ matrix.example.env }}-${{ matrix.example.name }}/*.rs > rust-project-${{ matrix.example.mcu }}/src/*.rs
             cat /home/esp/workspace/examples/${{ matrix.example.mcu }}-${{ matrix.example.env }}-${{ matrix.example.name }}/Cargo.toml > rust-project-${{ matrix.example.mcu }}/Cargo.toml
             cd rust-project-${{ matrix.example.mcu }}
