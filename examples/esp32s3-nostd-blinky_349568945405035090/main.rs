@@ -5,11 +5,11 @@
 #![no_std]
 #![no_main]
 
-use esp32s3_hal::{
+use esp_backtrace as _;
+use hal::{
     clock::ClockControl, gpio::IO, peripherals::Peripherals, prelude::*, timer::TimerGroup, Delay,
     Rtc,
 };
-use esp_backtrace as _;
 
 #[entry]
 fn main() -> ! {
