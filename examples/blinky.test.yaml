@@ -6,11 +6,11 @@ steps:
   - wait-serial: "Hello world!"
   - delay: 10ms
   - expect-pin:
-      part-id: esp
-      pin: 4
-      value: 1
+      part-id: led1
+      pin: A
+      value: 0
   - delay: 1000ms
   - expect-pin:
-      part-id: esp
-      pin: 4
-      value: 0
+      part-id: led1
+      pin: A
+      value: 1
