@@ -51,6 +51,6 @@ fn main() -> ! {
     println!("Hello world!");
     loop {
         led.toggle().unwrap();
-        delay.delay_ms(500u32);
+        delay.delay_ms(1000u32);
     }
 }
