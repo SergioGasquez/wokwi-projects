@@ -166,5 +166,5 @@ jobs:
           token: ${{ secrets.WOKWI_CLI_TOKEN }}
           path: examples/${{ matrix.example.mcu }}-${{ matrix.example.env }}-${{ matrix.example.name }}_${{ matrix.example.id }}
           timeout: 10000
-          expect_text: 'Hello world!'
+          scenario: ../blinky.test.yaml
           fail_text: 'Error'

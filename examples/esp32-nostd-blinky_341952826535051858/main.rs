@@ -41,7 +41,7 @@ fn main() -> ! {
     let mut delay = Delay::new(&clocks);
     println!("Hello world!");
     loop {
+        delay.delay_ms(1000u32);
         led.toggle().unwrap();
-        delay.delay_ms(500u32);
     }
 }
