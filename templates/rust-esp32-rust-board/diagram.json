@@ -6,8 +6,8 @@
         {
             "type": "board-esp32-c3-rust-1",
             "id": "esp",
-            "top": -195.98,
-            "left": 117.33,
+            "top": 0,
+            "left": 0,
             "attrs": {
                 "builder": "rust-std-esp"
             }
@@ -28,7 +28,8 @@
         ]
     ],
     "serialMonitor": {
-        "display": "auto"
+        "display": "terminal",
+        "convertEol": true
     },
     "dependencies": {}
 }

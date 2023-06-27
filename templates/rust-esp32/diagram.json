@@ -6,8 +6,8 @@
         {
             "type": "wokwi-esp32-devkit-v1",
             "id": "esp",
-            "top": 0.59,
-            "left": 0.67,
+            "top": 0,
+            "left": 0,
             "attrs": {
                 "builder": "rust-std-esp"
             }

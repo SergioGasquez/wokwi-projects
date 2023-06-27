@@ -27,5 +27,9 @@
             []
         ]
     ],
+    "serialMonitor": {
+        "display": "terminal",
+        "convertEol": true
+    },
     "dependencies": {}
 }
