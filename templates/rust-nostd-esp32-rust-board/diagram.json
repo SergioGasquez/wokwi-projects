@@ -28,6 +28,8 @@
         ]
     ],
     "serialMonitor": {
-        "display": "auto"
-    }
+        "display": "terminal",
+        "convertEol": true
+    },
+    "dependencies": {}
 }
