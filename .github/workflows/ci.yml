@@ -14,85 +14,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  # templates:
-  #   name: Template | ${{ matrix.target.name }}-${{ matrix.env }}
-  #   runs-on: ubuntu-latest
-  #   strategy:
-  #     fail-fast: false
-  #     matrix:
-  #       env: ["std", "nostd"]
-  #       target:
-  #         - mcu: "esp32"
-  #           name: "esp32"
-  #         - mcu: "esp32s2"
-  #           name: "esp32-s2"
-  #         - mcu: "esp32s3"
-  #           name: "esp32-s3"
-  #         - mcu: "esp32c3"
-  #           name: "esp32-c3"
-  #         - mcu: "esp32c3"
-  #           name: "esp32-rust-board"
-  #   steps:
-  #     - name: Checkout the repository
-  #       uses: actions/checkout@v3
-
-  #     - name: Update ownership
-  #       run: |
-  #         sudo chown 1000:1000 -R templates
-
-  #     - name: Pull Docker image
-  #       run: docker image pull wokwi/builder-rust-${{ matrix.env }}-esp
-
-  #     - name: Test code example in Docker image (std)
-  #       if: matrix.env == 'std'
-  #       uses: addnab/docker-run-action@v3
-  #       with:
-  #         image: wokwi/builder-rust-${{ matrix.env }}-esp
-  #         options: -u esp -v ${{ github.workspace }}:/home/esp/workspace
-  #         run: |
-  #           . /home/esp/export-esp.sh
-  #           export CARGO_INCREMENTAL=0
-  #           export RUSTC_WRAPPER=$(which sccache)
-  #           cp /home/esp/workspace/templates/rust-${{ matrix.target.name }}/*.rs rust-project-${{ matrix.target.mcu }}/src/
-  #           cat /home/esp/workspace/templates/rust-${{ matrix.target.name }}/Cargo.toml > rust-project-${{ matrix.target.mcu }}/Cargo.toml
-  #           cd rust-project-${{ matrix.target.mcu }}
-  #           cargo build --release --out-dir /home/esp/workspace/templates/rust-${{ matrix.target.name }} -Z unstable-options
-
-  #     - name: Test code example in Docker image (nostd)
-  #       if: matrix.env == 'nostd'
-  #       uses: addnab/docker-run-action@v3
-  #       with:
-  #         image: wokwi/builder-rust-nostd-esp
-  #         options: -u esp -v ${{ github.workspace }}:/home/esp/workspace
-  #         run: |
-  #           . /home/esp/export-esp.sh
-  #           export CARGO_INCREMENTAL=0
-  #           export RUSTC_WRAPPER=$(which sccache)
-  #           cp /home/esp/workspace/templates/rust-nostd-${{ matrix.target.name }}/*.rs rust-project-${{ matrix.target.mcu }}/src/
-  #           cat /home/esp/workspace/templates/rust-nostd-${{ matrix.target.name }}/Cargo.toml > rust-project-${{ matrix.target.mcu }}/Cargo.toml
-  #           cd rust-project-${{ matrix.target.mcu }}
-  #           cargo build --release --out-dir /home/esp/workspace/templates/rust-nostd-${{ matrix.target.name }} -Z unstable-options
-
-  #     - name: Wokwi CI check (std)
-  #       if: matrix.env == 'std'
-  #       uses: wokwi/wokwi-ci-action@v1
-  #       with:
-  #         token: ${{ secrets.WOKWI_CLI_TOKEN }}
-  #         path: templates/rust-${{ matrix.target.name }}
-  #         timeout: 10000
-  #         expect_text: 'Hello world!'
-  #         fail_text: 'Error'
-
-  #     - name: Wokwi CI check (nostd)
-  #       if: matrix.env == 'nostd'
-  #       uses: wokwi/wokwi-ci-action@v1
-  #       with:
-  #         token: ${{ secrets.WOKWI_CLI_TOKEN }}
-  #         path: templates/rust-nostd-${{ matrix.target.name }}
-  #         timeout: 10000
-  #         expect_text: 'Hello world!'
-  #         fail_text: 'Error'
-  template:
+  templates:
     name: Template | ${{ matrix.template.mcu }}-${{ matrix.template.env }}_${{ matrix.template.id }}
     runs-on: ubuntu-latest
     strategy:
@@ -136,12 +58,18 @@ jobs:
 
       - name: Download project code
         run: |
-          wget -q -O templates/${{ matrix.template.mcu }}-${{ matrix.template.env }}_${{ matrix.template.id }}.zip  https://wokwi.com/api/projects/${{ matrix.template.id }}/zip
-          unzip templates/${{ matrix.template.mcu }}-${{ matrix.template.env }}_${{ matrix.template.id }}.zip -d templates/${{ matrix.template.mcu }}-${{ matrix.template.env }}_${{ matrix.template.id }}
+          wget -q -O ${{ matrix.template.mcu }}-${{ matrix.template.env }}_${{ matrix.template.id }}.zip  https://wokwi.com/api/projects/${{ matrix.template.id }}/zip
+          unzip ${{ matrix.template.mcu }}-${{ matrix.template.env }}_${{ matrix.template.id }}.zip -d ${{ matrix.template.mcu }}-${{ matrix.template.env }}_${{ matrix.template.id }}
+      - name: Create wokwi.toml (nostd)
+        if: matrix.template.env == 'nostd'
+        run: echo -e "[wokwi]\nversion = 1\nfirmware = 'rust_project_${{ matrix.template.mcu }}'\nelf = 'rust_project_${{ matrix.template.mcu }}'" > ${{ matrix.template.mcu }}-${{ matrix.template.env }}_${{ matrix.template.id }}/wokwi.toml
+      - name: Create wokwi.toml (std)
+        if: matrix.template.env == 'std'
+        run: echo -e "[wokwi]\nversion = 1\nfirmware = 'rust-project-${{ matrix.template.mcu }}'\nelf = 'rust-project-${{ matrix.template.mcu }}'" > ${{ matrix.template.mcu }}-${{ matrix.template.env }}_${{ matrix.template.id }}/wokwi.toml
 
       - name: Update ownership
         run: |
-          sudo chown 1000:1000 -R templates/${{ matrix.template.mcu }}-${{ matrix.template.env }}_${{ matrix.template.id }}
+          sudo chown 1000:1000 -R ${{ matrix.template.mcu }}-${{ matrix.template.env }}_${{ matrix.template.id }}
 
       - name: Pull Docker image
         run: docker image pull wokwi/builder-rust-${{ matrix.template.env }}-esp
@@ -155,16 +83,16 @@ jobs:
             . /home/esp/export-esp.sh
             export CARGO_INCREMENTAL=0
             export RUSTC_WRAPPER=$(which sccache)
-            cp /home/esp/workspace/templates/${{ matrix.template.mcu }}-${{ matrix.template.env }}_${{ matrix.template.id }}/*.rs rust-project-${{ matrix.template.mcu }}/src/
-            cat /home/esp/workspace/templates/${{ matrix.template.mcu }}-${{ matrix.template.env }}_${{ matrix.template.id }}/Cargo.toml > rust-project-${{ matrix.template.mcu }}/Cargo.toml
+            cp /home/esp/workspace/${{ matrix.template.mcu }}-${{ matrix.template.env }}_${{ matrix.template.id }}/*.rs rust-project-${{ matrix.template.mcu }}/src/
+            cat /home/esp/workspace/${{ matrix.template.mcu }}-${{ matrix.template.env }}_${{ matrix.template.id }}/Cargo.toml > rust-project-${{ matrix.template.mcu }}/Cargo.toml
             cd rust-project-${{ matrix.template.mcu }}
-            cargo build --release --out-dir /home/esp/workspace/templates/${{ matrix.template.mcu }}-${{ matrix.template.env }}_${{ matrix.template.id }} -Z unstable-options
+            cargo build --release --out-dir /home/esp/workspace/${{ matrix.template.mcu }}-${{ matrix.template.env }}_${{ matrix.template.id }} -Z unstable-options
 
       - name: Wokwi CI check
         uses: wokwi/wokwi-ci-action@v1
         with:
           token: ${{ secrets.WOKWI_CLI_TOKEN }}
-          path: templates/${{ matrix.template.mcu }}-${{ matrix.template.env }}_${{ matrix.template.id }}
+          path: ${{ matrix.template.mcu }}-${{ matrix.template.env }}_${{ matrix.template.id }}
           timeout: 10000
           expect_text: 'Hello world!'
           fail_text: 'Error'
