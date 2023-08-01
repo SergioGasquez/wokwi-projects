@@ -14,96 +14,56 @@ on:
   workflow_dispatch:
 
 jobs:
-  templates:
-    name: Template | ${{ matrix.template.mcu }}-${{ matrix.template.env }}_${{ matrix.template.id }}
+  projects:
+    name: "${{ matrix.project.name }} | ${{ matrix.project.mcu }} | ${{ matrix.project.env }} | ${{ matrix.project.id }}"
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
-        template:
-          - id: "341952531613614675"
+        project:
+          # Templates
+          - name: template
+            id: "341952531613614675"
             env: nostd
             mcu: esp32
-          - id: "338154815612781140"
+          - name: template
+            id: "338154815612781140"
             env: std
             mcu: esp32
-          - id: "341956530834244180"
+          - name: template
+            id: "341956530834244180"
             env: nostd
             mcu: esp32c3
-          - id: "338322025101656660"
+          - name: template
+            id: "338322025101656660"
             env: std
             mcu: esp32c3
-            # Rust Board
-          - id: "341957109819114067"
+          ## Rust Board
+          - name: template
+            id: "341957109819114067"
             env: nostd
             mcu: esp32c3
-          - id: "338322111264195156"
+          - name: template
+            id: "338322111264195156"
             env: std
             mcu: esp32c3
-          - id: "341955277702038100"
+          - name: template
+            id: "341955277702038100"
             env: nostd
             mcu: esp32s2
-          - id: "338154940543271506"
+          - name: template
+            id: "338154940543271506"
             env: std
             mcu: esp32s2
-          - id: "349566517066596948"
+          - name: template
+            id: "349566517066596948"
             env: nostd
             mcu: esp32s3
-          - id: "345144250522927698"
+          - name: template
+            id: "345144250522927698"
             env: std
             mcu: esp32s3
-    steps:
-      - name: Checkout the repository
-        uses: actions/checkout@v3
-
-      - name: Download project code
-        run: |
-          wget -q -O ${{ matrix.template.mcu }}-${{ matrix.template.env }}_${{ matrix.template.id }}.zip  https://wokwi.com/api/projects/${{ matrix.template.id }}/zip
-          unzip ${{ matrix.template.mcu }}-${{ matrix.template.env }}_${{ matrix.template.id }}.zip -d ${{ matrix.template.mcu }}-${{ matrix.template.env }}_${{ matrix.template.id }}
-      - name: Create wokwi.toml (nostd)
-        if: matrix.template.env == 'nostd'
-        run: echo -e "[wokwi]\nversion = 1\nfirmware = 'rust_project_${{ matrix.template.mcu }}'\nelf = 'rust_project_${{ matrix.template.mcu }}'" > ${{ matrix.template.mcu }}-${{ matrix.template.env }}_${{ matrix.template.id }}/wokwi.toml
-      - name: Create wokwi.toml (std)
-        if: matrix.template.env == 'std'
-        run: echo -e "[wokwi]\nversion = 1\nfirmware = 'rust-project-${{ matrix.template.mcu }}'\nelf = 'rust-project-${{ matrix.template.mcu }}'" > ${{ matrix.template.mcu }}-${{ matrix.template.env }}_${{ matrix.template.id }}/wokwi.toml
-
-      - name: Update ownership
-        run: |
-          sudo chown 1000:1000 -R ${{ matrix.template.mcu }}-${{ matrix.template.env }}_${{ matrix.template.id }}
-
-      - name: Pull Docker image
-        run: docker image pull wokwi/builder-rust-${{ matrix.template.env }}-esp
-
-      - name: Test code example in Docker image
-        uses: addnab/docker-run-action@v3
-        with:
-          image: wokwi/builder-rust-${{ matrix.template.env }}-esp
-          options: -u esp -v ${{ github.workspace }}:/home/esp/workspace
-          run: |
-            . /home/esp/export-esp.sh
-            export CARGO_INCREMENTAL=0
-            export RUSTC_WRAPPER=$(which sccache)
-            cp /home/esp/workspace/${{ matrix.template.mcu }}-${{ matrix.template.env }}_${{ matrix.template.id }}/*.rs rust-project-${{ matrix.template.mcu }}/src/
-            cat /home/esp/workspace/${{ matrix.template.mcu }}-${{ matrix.template.env }}_${{ matrix.template.id }}/Cargo.toml > rust-project-${{ matrix.template.mcu }}/Cargo.toml
-            cd rust-project-${{ matrix.template.mcu }}
-            cargo build --release --out-dir /home/esp/workspace/${{ matrix.template.mcu }}-${{ matrix.template.env }}_${{ matrix.template.id }} -Z unstable-options
-
-      - name: Wokwi CI check
-        uses: wokwi/wokwi-ci-action@v1
-        with:
-          token: ${{ secrets.WOKWI_CLI_TOKEN }}
-          path: ${{ matrix.template.mcu }}-${{ matrix.template.env }}_${{ matrix.template.id }}
-          timeout: 10000
-          expect_text: 'Hello world!'
-          fail_text: 'Error'
-
-  examples:
-    name: Example | ${{ matrix.example.mcu }}-${{ matrix.example.env }}-${{ matrix.example.name }}_${{ matrix.example.id }}
-    runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        example:
+          # Examples
           - name: blinky
             id: "341952826535051858"
             env: nostd
@@ -142,35 +102,50 @@ jobs:
 
       - name: Download project code
         run: |
-          wget -q -O examples/${{ matrix.example.mcu }}-${{ matrix.example.env }}-${{ matrix.example.name }}_${{ matrix.example.id }}.zip  https://wokwi.com/api/projects/${{ matrix.example.id }}/zip
-          unzip examples/${{ matrix.example.mcu }}-${{ matrix.example.env }}-${{ matrix.example.name }}_${{ matrix.example.id }}.zip -d examples/${{ matrix.example.mcu }}-${{ matrix.example.env }}-${{ matrix.example.name }}_${{ matrix.example.id }}
+          wget -q -O ${{ matrix.project.mcu }}-${{ matrix.project.env }}_${{ matrix.project.id }}.zip  https://wokwi.com/api/projects/${{ matrix.project.id }}/zip
+          unzip ${{ matrix.project.mcu }}-${{ matrix.project.env }}_${{ matrix.project.id }}.zip -d ${{ matrix.project.mcu }}-${{ matrix.project.env }}_${{ matrix.project.id }}
+      - name: Create wokwi.toml (nostd)
+        if: matrix.project.env == 'nostd'
+        run: echo -e "[wokwi]\nversion = 1\nfirmware = 'rust_project_${{ matrix.project.mcu }}'\nelf = 'rust_project_${{ matrix.project.mcu }}'" > ${{ matrix.project.mcu }}-${{ matrix.project.env }}_${{ matrix.project.id }}/wokwi.toml
+      - name: Create wokwi.toml (std)
+        if: matrix.project.env == 'std'
+        run: echo -e "[wokwi]\nversion = 1\nfirmware = 'rust-project-${{ matrix.project.mcu }}'\nelf = 'rust-project-${{ matrix.project.mcu }}'" > ${{ matrix.project.mcu }}-${{ matrix.project.env }}_${{ matrix.project.id }}/wokwi.toml
 
       - name: Update ownership
         run: |
-          sudo chown 1000:1000 -R examples/${{ matrix.example.mcu }}-${{ matrix.example.env }}-${{ matrix.example.name }}_${{ matrix.example.id }}
+          sudo chown 1000:1000 -R ${{ matrix.project.mcu }}-${{ matrix.project.env }}_${{ matrix.project.id }}
 
       - name: Pull Docker image
-        run: docker image pull wokwi/builder-rust-${{ matrix.example.env }}-esp
+        run: docker image pull wokwi/builder-rust-${{ matrix.project.env }}-esp
 
       - name: Test code example in Docker image
         uses: addnab/docker-run-action@v3
         with:
-          image: wokwi/builder-rust-${{ matrix.example.env }}-esp
+          image: wokwi/builder-rust-${{ matrix.project.env }}-esp
           options: -u esp -v ${{ github.workspace }}:/home/esp/workspace
           run: |
             . /home/esp/export-esp.sh
-            export CARGO_INCREMENTAL=0
-            export RUSTC_WRAPPER=$(which sccache)
-            cp /home/esp/workspace/examples/${{ matrix.example.mcu }}-${{ matrix.example.env }}-${{ matrix.example.name }}_${{ matrix.example.id }}/*.rs rust-project-${{ matrix.example.mcu }}/src/
-            cat /home/esp/workspace/examples/${{ matrix.example.mcu }}-${{ matrix.example.env }}-${{ matrix.example.name }}_${{ matrix.example.id }}/Cargo.toml > rust-project-${{ matrix.example.mcu }}/Cargo.toml
-            cd rust-project-${{ matrix.example.mcu }}
-            cargo build --release --out-dir /home/esp/workspace/examples/${{ matrix.example.mcu }}-${{ matrix.example.env }}-${{ matrix.example.name }}_${{ matrix.example.id }} -Z unstable-options
+            cp /home/esp/workspace/${{ matrix.project.mcu }}-${{ matrix.project.env }}_${{ matrix.project.id }}/*.rs rust-project-${{ matrix.project.mcu }}/src/
+            cat /home/esp/workspace/${{ matrix.project.mcu }}-${{ matrix.project.env }}_${{ matrix.project.id }}/Cargo.toml > rust-project-${{ matrix.project.mcu }}/Cargo.toml
+            cd rust-project-${{ matrix.project.mcu }}
+            cargo build --release --out-dir /home/esp/workspace/${{ matrix.project.mcu }}-${{ matrix.project.env }}_${{ matrix.project.id }} -Z unstable-options
 
       - name: Wokwi CI check
+        if: matrix.project.name == 'template'
         uses: wokwi/wokwi-ci-action@v1
         with:
           token: ${{ secrets.WOKWI_CLI_TOKEN }}
-          path: examples/${{ matrix.example.mcu }}-${{ matrix.example.env }}-${{ matrix.example.name }}_${{ matrix.example.id }}
+          path: ${{ matrix.project.mcu }}-${{ matrix.project.env }}_${{ matrix.project.id }}
+          timeout: 10000
+          expect_text: 'Hello world!'
+          fail_text: 'Error'
+
+      - name: Wokwi CI check
+        if: matrix.project.name == 'blinky'
+        uses: wokwi/wokwi-ci-action@v1
+        with:
+          token: ${{ secrets.WOKWI_CLI_TOKEN }}
+          path: ${{ matrix.project.mcu }}-${{ matrix.project.env }}_${{ matrix.project.id }}
           timeout: 10000
           scenario: ../blinky.test.yaml
           fail_text: 'Error'
