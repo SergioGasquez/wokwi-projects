@@ -136,8 +136,10 @@ jobs:
       - name: Checkout the repository
         uses: actions/checkout@v3
 
-      - name: Get diagram
-        run: wget -q -O examples/${{ matrix.example.mcu }}-${{ matrix.example.env }}-${{ matrix.example.name }}_${{ matrix.example.id }}/diagram.json  https://wokwi.com/api/projects/${{ matrix.example.id }}/diagram.json
+      - name: Download project code
+        run: |
+          wget -q -O examples/${{ matrix.example.mcu }}-${{ matrix.example.env }}-${{ matrix.example.name }}_${{ matrix.example.id }}.zip  https://wokwi.com/api/projects/${{ matrix.example.id }}/zip
+          unzip examples/${{ matrix.example.mcu }}-${{ matrix.example.env }}-${{ matrix.example.name }}_${{ matrix.example.id }}.zip -d examples/${{ matrix.example.mcu }}-${{ matrix.example.env }}-${{ matrix.example.name }}_${{ matrix.example.id }}
 
       - name: Update ownership
         run: |
