@@ -1,4 +1,0 @@
-[wokwi]
-version = 1
-firmware = 'rust_project_esp32s2'
-elf = 'rust_project_esp32s2'
