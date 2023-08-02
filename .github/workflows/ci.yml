@@ -149,3 +149,9 @@ jobs:
           timeout: 10000
           scenario: ../blinky.test.yaml
           fail_text: 'Error'
+
+      - name: Upload source code
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{ matrix.project.name }}-${{ matrix.project.mcu }}-${{ matrix.project.env }}_${{ matrix.project.id }}
+          path: ${{ matrix.project.mcu }}-${{ matrix.project.env }}_${{ matrix.project.id }}
