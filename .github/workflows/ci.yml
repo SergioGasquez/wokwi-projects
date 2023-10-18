@@ -167,6 +167,7 @@ jobs:
           fail_text: 'Error'
 
       - name: Upload source code
+        if: success() || failure()
         uses: actions/upload-artifact@v3
         with:
           name: ${{ matrix.project.name }}-${{ matrix.project.mcu }}-${{ matrix.project.env }}_${{ matrix.project.id }}
