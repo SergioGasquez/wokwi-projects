@@ -56,6 +56,14 @@ jobs:
             env: std
             mcu: esp32c6
           - name: template
+            id: "379094104004151297"
+            env: nostd
+            mcu: esp32h2
+          - name: template
+            id: "379361398729686017"
+            env: std
+            mcu: esp32h2
+          - name: template
             id: "341955277702038100"
             env: nostd
             mcu: esp32s2
@@ -96,6 +104,14 @@ jobs:
             id: "378092245692314625"
             env: std
             mcu: esp32c6
+          - name: blinky
+            id: "379361473820314625"
+            env: nostd
+            mcu: esp32h2
+          - name: blinky
+            id: "379361684344001537"
+            env: std
+            mcu: esp32h2
           - name: blinky
             id: "341955297469792851"
             env: nostd
