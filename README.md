@@ -21,17 +21,19 @@
   - [ESP32-S3](https://wokwi.com/projects/349566517066596948)
 
 ## Examples
-- [ESP32 | std | Blinky](https://wokwi.com/projects/333363577816613460)
-- [ESP32-C3 | std | Blinky](https://wokwi.com/projects/332188235906155092)
-- [ESP32-C6 | std | Blinky](https://wokwi.com/projects/378092245692314625)
-- [ESP32-H2 | std | Blinky](https://wokwi.com/projects/379361684344001537)
-- [ESP32-S2 | std | Blinky](https://wokwi.com/projects/333363982163247699)
-- [ESP32-S3 | std | Blinky](https://wokwi.com/projects/361808947755817985)
-- [ESP32 | no_std | Blinky](https://wokwi.com/projects/341952826535051858)
-- [ESP32-C3 | no_std | Blinky](https://wokwi.com/projects/341956526159692371)
-- [ESP32-C6 | no_std | Blinky](https://wokwi.com/projects/378092585951093761)
-- [ESP32-H2 | no_std | Blinky](https://wokwi.com/projects/379361473820314625)
-- [ESP32-S2 | no_std | Blinky](https://wokwi.com/projects/341955297469792851)
-- [ESP32-S3 | no_std | Blinky](https://wokwi.com/projects/349568945405035090)
+- `std`
+  - [ESP32 | std | Blinky](https://wokwi.com/projects/333363577816613460)
+  - [ESP32-C3 | std | Blinky](https://wokwi.com/projects/332188235906155092)
+  - [ESP32-C6 | std | Blinky](https://wokwi.com/projects/378092245692314625)
+  - [ESP32-H2 | std | Blinky](https://wokwi.com/projects/379361684344001537)
+  - [ESP32-S2 | std | Blinky](https://wokwi.com/projects/333363982163247699)
+  - [ESP32-S3 | std | Blinky](https://wokwi.com/projects/361808947755817985)
+- `no_std`
+  - [ESP32 | no_std | Blinky](https://wokwi.com/projects/341952826535051858)
+  - [ESP32-C3 | no_std | Blinky](https://wokwi.com/projects/341956526159692371)
+  - [ESP32-C6 | no_std | Blinky](https://wokwi.com/projects/378092585951093761)
+  - [ESP32-H2 | no_std | Blinky](https://wokwi.com/projects/379361473820314625)
+  - [ESP32-S2 | no_std | Blinky](https://wokwi.com/projects/341955297469792851)
+  - [ESP32-S3 | no_std | Blinky](https://wokwi.com/projects/349568945405035090)
 
 
