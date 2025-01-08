@@ -80,12 +80,12 @@ jobs:
           sudo chown 1000:1000 -R ${{ matrix.project.mcu }}_${{ matrix.project.id }}
 
       - name: Pull Docker image
-        run: docker image pull wokwi/builder-rust-${{ matrix.project.env }}-esp
+        run: docker image pull wokwi/builder-rust-nostd-esp
 
       - name: Test code example in Docker image
         uses: addnab/docker-run-action@v3
         with:
-          image: wokwi/builder-rust-${{ matrix.project.env }}-esp
+          image: wokwi/builder-rust-nostd-esp
           options: -u esp -v ${{ github.workspace }}:/home/esp/workspace
           run: |
             . /home/esp/export-esp.sh
