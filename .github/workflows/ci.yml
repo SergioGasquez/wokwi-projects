@@ -108,7 +108,7 @@ jobs:
             cargo build --release || exit 1
             cp target/${{ matrix.project.target }}/release/rust_project_${{ matrix.project.mcu }} /home/esp/workspace/${{ matrix.project.mcu }}_${{ matrix.project.id }}
 
-      - name: Wokwi CI check
+      - name: Wokwi CI check (template)
         if: matrix.project.name == 'template'
         uses: wokwi/wokwi-ci-action@v1
         with:
@@ -118,7 +118,7 @@ jobs:
           expect_text: 'Hello world!'
           fail_text: 'Error'
 
-      - name: Wokwi CI check
+      - name: Wokwi CI check (blinky)
         if: matrix.project.name == 'blinky'
         uses: wokwi/wokwi-ci-action@v1
         with:
