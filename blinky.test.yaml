@@ -8,9 +8,9 @@ steps:
         - expect-pin:
                   part-id: r1
                   pin: 1
-                  value: 1
-        - delay: 1250ms
+                  value: 0
+        - delay: 600ms
         - expect-pin:
                   part-id: r1
                   pin: 1
-                  value: 0
+                  value: 1
