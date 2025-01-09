@@ -15,7 +15,7 @@ on:
 
 jobs:
   projects:
-    name: "${{ matrix.project.name }} | ${{ matrix.project.mcu }} | ${{ matrix.project.env }} | ${{ matrix.project.id }}"
+    name: "${{ matrix.project.name }} | ${{ matrix.project.mcu }} | ${{ matrix.project.id }}"
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -24,160 +24,106 @@ jobs:
           # Templates
           - name: template
             id: "341952531613614675"
-            env: nostd
             mcu: esp32
-          - name: template
-            id: "338154815612781140"
-            env: std
-            mcu: esp32
+            target: "xtensa-esp32-none-elf"
           - name: template
             id: "341956530834244180"
-            env: nostd
             mcu: esp32c3
-          - name: template
-            id: "338322025101656660"
-            env: std
-            mcu: esp32c3
+            target: "riscv32imc-unknown-none-elf"
           ## Rust Board
           - name: template
             id: "341957109819114067"
-            env: nostd
             mcu: esp32c3
-          - name: template
-            id: "338322111264195156"
-            env: std
-            mcu: esp32c3
+            target: "riscv32imc-unknown-none-elf"
           - name: template
             id: "377857146822034433"
-            env: nostd
             mcu: esp32c6
-          - name: template
-            id: "377833187169638401"
-            env: std
-            mcu: esp32c6
+            target: "riscv32imac-unknown-none-elf"
           - name: template
             id: "379094104004151297"
-            env: nostd
             mcu: esp32h2
-          - name: template
-            id: "379361398729686017"
-            env: std
-            mcu: esp32h2
+            target: "riscv32imac-unknown-none-elf"
           - name: template
             id: "341955277702038100"
-            env: nostd
             mcu: esp32s2
-          - name: template
-            id: "338154940543271506"
-            env: std
-            mcu: esp32s2
+            target: "xtensa-esp32s2-none-elf"
           - name: template
             id: "349566517066596948"
-            env: nostd
             mcu: esp32s3
-          - name: template
-            id: "345144250522927698"
-            env: std
-            mcu: esp32s3
+            target: "xtensa-esp32s3-none-elf"
           # Examples
           - name: blinky
             id: "341952826535051858"
-            env: nostd
             mcu: esp32
-          - name: blinky
-            id: "333363577816613460"
-            env: std
-            mcu: esp32
+            target: "xtensa-esp32-none-elf"
           - name: blinky
             id: "341956526159692371"
-            env: nostd
             mcu: esp32c3
-          - name: blinky
-            id: "332188235906155092"
-            env: std
-            mcu: esp32c3
+            target: "riscv32imc-unknown-none-elf"
           - name: blinky
             id: "378092585951093761"
-            env: nostd
             mcu: esp32c6
-          - name: blinky
-            id: "378092245692314625"
-            env: std
-            mcu: esp32c6
+            target: "riscv32imac-unknown-none-elf"
           - name: blinky
             id: "379361473820314625"
-            env: nostd
             mcu: esp32h2
-          - name: blinky
-            id: "379361684344001537"
-            env: std
-            mcu: esp32h2
+            target: "riscv32imac-unknown-none-elf"
           - name: blinky
             id: "341955297469792851"
-            env: nostd
             mcu: esp32s2
-          - name: blinky
-            id: "333363982163247699"
-            env: std
-            mcu: esp32s2
+            target: "xtensa-esp32s2-none-elf"
           - name: blinky
             id: "349568945405035090"
-            env: nostd
             mcu: esp32s3
-          - name: blinky
-            id: "361808947755817985"
-            env: std
-            mcu: esp32s3
+            target: "xtensa-esp32s3-none-elf"
     steps:
       - name: Checkout the repository
         uses: actions/checkout@v4
 
       - name: Download project code
         run: |
-          wget -q -O ${{ matrix.project.mcu }}-${{ matrix.project.env }}_${{ matrix.project.id }}.zip  https://wokwi.com/api/projects/${{ matrix.project.id }}/zip
-          unzip ${{ matrix.project.mcu }}-${{ matrix.project.env }}_${{ matrix.project.id }}.zip -d ${{ matrix.project.mcu }}-${{ matrix.project.env }}_${{ matrix.project.id }}
-      - name: Create wokwi.toml (nostd)
-        if: matrix.project.env == 'nostd'
-        run: echo -e "[wokwi]\nversion = 1\nfirmware = 'rust_project_${{ matrix.project.mcu }}'\nelf = 'rust_project_${{ matrix.project.mcu }}'" > ${{ matrix.project.mcu }}-${{ matrix.project.env }}_${{ matrix.project.id }}/wokwi.toml
-      - name: Create wokwi.toml (std)
-        if: matrix.project.env == 'std'
-        run: echo -e "[wokwi]\nversion = 1\nfirmware = 'rust-project-${{ matrix.project.mcu }}'\nelf = 'rust-project-${{ matrix.project.mcu }}'" > ${{ matrix.project.mcu }}-${{ matrix.project.env }}_${{ matrix.project.id }}/wokwi.toml
+          wget -q -O ${{ matrix.project.mcu }}_${{ matrix.project.id }}.zip  https://wokwi.com/api/projects/${{ matrix.project.id }}/zip
+          unzip ${{ matrix.project.mcu }}_${{ matrix.project.id }}.zip -d ${{ matrix.project.mcu }}_${{ matrix.project.id }}
+
+      - name: Create wokwi.toml
+        run: echo -e "[wokwi]\nversion = 1\nfirmware = 'rust_project_${{ matrix.project.mcu }}'\nelf = 'rust_project_${{ matrix.project.mcu }}'" > ${{ matrix.project.mcu }}_${{ matrix.project.id }}/wokwi.toml
 
       - name: Update ownership
         run: |
-          sudo chown 1000:1000 -R ${{ matrix.project.mcu }}-${{ matrix.project.env }}_${{ matrix.project.id }}
+          sudo chown 1000:1000 -R ${{ matrix.project.mcu }}_${{ matrix.project.id }}
 
       - name: Pull Docker image
-        run: docker image pull wokwi/builder-rust-${{ matrix.project.env }}-esp
+        run: docker image pull wokwi/builder-rust-nostd-esp
 
       - name: Test code example in Docker image
         uses: addnab/docker-run-action@v3
         with:
-          image: wokwi/builder-rust-${{ matrix.project.env }}-esp
+          image: wokwi/builder-rust-nostd-esp
           options: -u esp -v ${{ github.workspace }}:/home/esp/workspace
           run: |
             . /home/esp/export-esp.sh
-            cp /home/esp/workspace/${{ matrix.project.mcu }}-${{ matrix.project.env }}_${{ matrix.project.id }}/*.rs rust-project-${{ matrix.project.mcu }}/src/
-            cat /home/esp/workspace/${{ matrix.project.mcu }}-${{ matrix.project.env }}_${{ matrix.project.id }}/Cargo.toml > rust-project-${{ matrix.project.mcu }}/Cargo.toml
+            cp /home/esp/workspace/${{ matrix.project.mcu }}_${{ matrix.project.id }}/*.rs rust-project-${{ matrix.project.mcu }}/src/
+            cat /home/esp/workspace/${{ matrix.project.mcu }}_${{ matrix.project.id }}/Cargo.toml > rust-project-${{ matrix.project.mcu }}/Cargo.toml
             cd rust-project-${{ matrix.project.mcu }}
-            cargo build --release --out-dir /home/esp/workspace/${{ matrix.project.mcu }}-${{ matrix.project.env }}_${{ matrix.project.id }} -Z unstable-options
+            cargo build --release || exit 1
+            cp target/${{ matrix.project.target }}/release/rust_project_${{ matrix.project.mcu }} /home/esp/workspace/${{ matrix.project.mcu }}_${{ matrix.project.id }}
 
-      - name: Wokwi CI check
+      - name: Wokwi CI check (template)
         if: matrix.project.name == 'template'
         uses: wokwi/wokwi-ci-action@v1
         with:
           token: ${{ secrets.WOKWI_CLI_TOKEN }}
-          path: ${{ matrix.project.mcu }}-${{ matrix.project.env }}_${{ matrix.project.id }}
+          path: ${{ matrix.project.mcu }}_${{ matrix.project.id }}
           timeout: 10000
           expect_text: 'Hello world!'
           fail_text: 'Error'
 
-      - name: Wokwi CI check
+      - name: Wokwi CI check (blinky)
         if: matrix.project.name == 'blinky'
         uses: wokwi/wokwi-ci-action@v1
         with:
           token: ${{ secrets.WOKWI_CLI_TOKEN }}
-          path: ${{ matrix.project.mcu }}-${{ matrix.project.env }}_${{ matrix.project.id }}
+          path: ${{ matrix.project.mcu }}_${{ matrix.project.id }}
           timeout: 10000
           scenario: ../blinky.test.yaml
           fail_text: 'Error'
@@ -186,5 +132,5 @@ jobs:
         if: success() || failure()
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ matrix.project.name }}-${{ matrix.project.mcu }}-${{ matrix.project.env }}_${{ matrix.project.id }}
-          path: ${{ matrix.project.mcu }}-${{ matrix.project.env }}_${{ matrix.project.id }}
+          name: ${{ matrix.project.name }}_${{ matrix.project.mcu }}_${{ matrix.project.id }}
+          path: ${{ matrix.project.mcu }}_${{ matrix.project.id }}
