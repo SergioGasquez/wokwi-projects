@@ -2,6 +2,9 @@
 
 [![CI](https://github.com/SergioGasquez/wokwi-projects/actions/workflows/ci.yml/badge.svg)](https://github.com/SergioGasquez/wokwi-projects/actions/workflows/ci.yml)
 
+> [!WARNING]
+> This repository is now archived since the support for ESP32 Rust builders has been deprecated.
+
 ## Templates
 - [ESP32](https://wokwi.com/projects/341952531613614675)
 - [ESP32-C3](https://wokwi.com/projects/341956530834244180)
